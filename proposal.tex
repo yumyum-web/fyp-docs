@@ -1,0 +1,258 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{cite}
+\usepackage{titlesec}
+\usepackage{amsmath}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+    \vspace*{2cm}
+    \LARGE \textbf{Final Year Project Proposal} \\
+    \vspace{1.5cm}
+    \huge \textbf{Automatic Microservice Decomposition using Improved Code Embedding} \\
+    \vspace{2cm}
+    \Large \textbf{Student Information} \\
+    \vspace{0.5cm}
+    \large
+    \textbf{Name:} Yumeth Sumathipala \\
+    \textbf{Course Code:} CS4099 - Final Year Project \\
+    \vspace{1.5cm}
+    \Large \textbf{Department of Computer Science and Engineering} \\
+    \vspace{0.5cm}
+    \large University / Institution Name \\
+    \vspace{1cm}
+    \textbf{Date:} June 2026
+\end{center}
+
+\newpage
+
+\begin{abstract}
+The migration of legacy monolithic architectures to microservices has emerged as a fundamental necessity in modern software engineering, aiming to resolve issues pertaining to scalability, maintainability, and deployment velocity. Despite its documented advantages, the decomposition of complex monolithic systems remains an exceptionally challenging, error-prone, and labor-intensive endeavor. Traditional decomposition techniques predominantly rely on static and dynamic code analysis or rudimentary graph clustering, which often fail to capture the deep semantic relationships embedded within source code. This project introduces a novel framework for automated microservice decomposition utilizing advanced, representation-based deep learning paradigms, specifically capitalizing on improved code embedding techniques. By leveraging distributed representations of source code enhanced with attention mechanisms and semantic context awareness, the proposed methodology aims to accurately cluster monolithic components into highly cohesive, loosely coupled microservice candidates. This proposal outlines the extensive theoretical context, rigorous methodology, mathematical formulations, and evaluation pipeline utilizing industry-standard benchmarks. The resulting framework is expected to significantly outperform baseline algorithms in generating logically coherent microservice boundaries, bridging the gap between syntactic structural analysis and developer intent.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+\subsection{Background}
+The paradigm shift from monolithic software architectures to microservices has revolutionized the landscape of cloud-native application development \cite{velepucha2021, wolfart2021}. Monolithic applications tightly couple all business logic, data access layers, and user interfaces into a single deployable artifact. While this approach benefits initial development velocity, it ultimately creates severe bottlenecks in scaling, continuous delivery, and fault isolation as the application grows in complexity \cite{auer2021, romani2022}. Microservice Architectures (MSA), conversely, divide a system into an ecosystem of fine-grained, independently deployable services communicating over lightweight protocols \cite{bolanowski2022}. The migration path, however, requires identifying optimal boundaries within the legacy code—a procedure heavily researched but yet to be fully automated \cite{abgaz2023, zhang2020}.
+
+\subsection{Research Problem}
+Decomposing monolithic applications requires striking a precise balance between high cohesion within a service and low coupling across services. Existing automated approaches commonly rely on either structural dependencies extracted via static analysis \cite{krause2020, sooksatra2024} or behavioral logs captured via dynamic analysis \cite{jin2021, liu2022}. However, these approaches overlook the rich semantic information encapsulated in source code, such as domain-specific entity relations, documentation, and identifier semantics \cite{brito2021, aitmansour2025semantic}. Furthermore, generic Natural Language Processing (NLP) embeddings and standard Graph Neural Networks (GNNs) \cite{nguyen2022, trabelsi2024} struggle with the complex, hierarchical abstractions unique to programmatic structures, leading to mathematically optimal but functionally meaningless microservice boundaries. 
+
+\subsection{Motivation}
+The failure to adequately encapsulate semantic context frequently results in ``distributed monoliths," an anti-pattern that exhibits the operational overhead of MSA without any of its scalability benefits. Enhancing the accuracy of decomposition tools drastically mitigates the financial and temporal risks associated with cloud migration projects \cite{kalia2021}. Recent advancements in deep learning-based code representation \cite{aldebagy2021, naik2024} indicate that rich, multidimensional embeddings capable of interpreting both structural ASTs (Abstract Syntax Trees) and textual token sequences hold massive potential. 
+
+\subsection{Research Objectives}
+To address the aforementioned challenges, this research pursues the following measurable objectives:
+\begin{enumerate}
+    \item \textbf{Develop an enhanced code embedding architecture} that simultaneously captures syntactic dependencies (via AST paths) and semantic context (via contextualized token embeddings) from legacy Java/C\# codebases.
+    \item \textbf{Design a hybrid clustering algorithm} that utilizes the high-dimensional code embeddings to define microservice boundaries, optimizing for structural modularity (e.g., MQ metric) and semantic cohesion.
+    \item \textbf{Implement a prototype framework} that automates the ingestion, embedding, clustering, and boundary recommendation processes.
+    \item \textbf{Evaluate the proposed framework} against state-of-the-art baselines (such as Bunch \cite{mitchell2007}, Mono2Micro \cite{kalia2020}, and conventional GNN approaches \cite{mathai2022}) using well-established open-source enterprise monoliths.
+\end{enumerate}
+
+\section{Literature Review}
+
+The literature surrounding software decomposition has expanded dramatically, transitioning from heuristic search algorithms to highly sophisticated deep learning paradigms. This section comprehensively dissects the trajectory of monolith-to-microservices migration methodologies \cite{trabelsi2025}.
+
+\subsection{Foundations of Monolithic Decomposition}
+The challenges of legacy software modernization are well documented \cite{wolfart2021, romani2022}. Early attempts to refactor software into modular components relied heavily on search-based software engineering (SBSE). The Bunch algorithm, conceptualized by Mitchell and Mancoridis \cite{mitchell2007}, utilized hill-climbing techniques to maximize a modularization quality (MQ) metric. While fundamental, these approaches strictly focused on structural topologies, treating software as a generic directed graph without understanding the underlying business domain. Modern literature \cite{abgaz2023, oumoussa2024} dictates that domain-driven design (DDD) principles must guide decomposition, necessitating the integration of semantic analyses.
+
+\subsection{Static, Dynamic, and Hybrid Analyses}
+Current decomposition frameworks often utilize static code analysis to extract class-level dependencies, method invocations, and variable accesses \cite{kamimura2018, krause2020}. Sooksatra et al. \cite{sooksatra2024} applied fuzzy c-means clustering over static representations to suggest boundaries. Conversely, dynamic analysis approaches utilize execution traces and system logs \cite{liu2022} to map runtime component interactions \cite{jin2021}. While dynamic methods accurately portray actual usage pathways, they suffer from inadequate code coverage. Consequently, recent trends advocate for hybrid approaches. Kalia et al. introduced Mono2Micro \cite{kalia2020, kalia2021}, an AI-based toolchain that elegantly combines static structural graphs with dynamic runtime profiles, achieving significant adoption in enterprise modernization.
+
+\subsection{NLP and Semantic Driven Decomposition}
+Acknowledging the limitations of pure structural analysis, researchers have pivoted towards Semantic Approaches \cite{aitmansour2025semantic}. Brito et al. \cite{brito2021} applied topic modeling (Latent Dirichlet Allocation) to source code identifiers to extract functional topics, assigning classes to microservices based on topic alignment. More advanced frameworks, such as MINDS \cite{aitmansour2025minds} and GTMicro \cite{bajaj2024}, leverage transformer-based NLP models to extract deeper meaning from codebases. Kherwa and Bansal \cite{kherwa2019} highlight that while standard NLP is powerful, source code possesses a strict grammar that requires specialized embedding techniques \cite{aldebagy2021} to prevent information loss.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Semantic and NLP-Driven Microservice Decomposition Approaches}
+\label{tab:semantic_comp}
+\begin{tabularx}{\textwidth}{@{}l X X c@{}}
+\toprule
+\textbf{Framework} & \textbf{Strengths} & \textbf{Limitations} & \textbf{Ref} \\
+\midrule
+Topic-Modelling & High interpretability, aligns well with Domain Driven Design boundaries. & Ignores structural dependencies, struggles with poorly named variables. & \cite{brito2021} \\
+GTMicro & Utilizes deep transformers for accurate context recognition in greenfield. & Computationally expensive, limited AST integration. & \cite{bajaj2024} \\
+MINDS & Integrates process mining with NLP for superior domain alignment. & Highly dependent on quality execution logs and extensive trace generation. & \cite{aitmansour2025minds} \\
+CARGO & AI-guided dependency resolution, excellent for handling monolith state. & Complex configuration, opaque boundary justification. & \cite{nitin2023} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Graph-Based and Deep Learning Methodologies}
+Software is inherently graph-structured. Consequently, Graph Neural Networks (GNNs) have become highly prevalent in modern research \cite{nguyen2022}. Mathai et al. \cite{mathai2022} represented software as heterogeneous GNNs to classify nodes into distinct service categories. Trabelsi et al. \cite{trabelsi2024} and Desai et al. \cite{desai2021} introduced methods to dilute structural outliers and utilize graph clustering for microservice discovery. However, standard GNNs primarily propagate node features across topological structures, often leading to over-smoothing where distinct business domains blur together. Furthermore, Maharjan et al. \cite{maharjan2025} and Sooksatra et al. \cite{sooksatra2022} proposed Variational Autoencoder (VAE)-based GNN approaches to reconstruct software graphs while considering class duplication constraints.
+
+\begin{table}[htbp]
+\centering
+\caption{Strengths and Limitations of Graph-Based Decomposition Methods}
+\label{tab:gnn_comp}
+\begin{tabularx}{\textwidth}{@{}l X X c@{}}
+\toprule
+\textbf{Approach} & \textbf{Strengths} & \textbf{Limitations} & \textbf{Ref} \\
+\midrule
+Heterogeneous GNNs & Captures varied relationships (e.g., inherit, invoke). & Prone to feature over-smoothing on dense monoliths. & \cite{mathai2022} \\
+Graph Clustering (Leiden) & Mathematically guarantees well-connected communities. & Purely topological; lacks semantic awareness. & \cite{traag2019, filippone2023} \\
+VAE-Based GNNs & Effectively captures latent structural distributions. & Requires substantial training data per system. & \cite{maharjan2025, sooksatra2022} \\
+Code Embedding + DL & Fuses structural topology with profound semantic logic. & Currently lacks unified frameworks integrating ASTs. & \cite{aldebagy2021, naik2024} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Identification of the Literature Gap}
+Despite the proliferation of graph and NLP methodologies, a distinct gap remains in combining representation-based code embedding (which encodes both syntax trees and contextual tokens) with modularity-optimizing clustering algorithms \cite{alwis2025, chaieb2024}. Current deep learning implementations in this domain treat source code as either pure text or pure graphs, rather than a synthesized fusion of the two \cite{liu2024, wang2024}. The proposed research directly targets this intersection.
+
+\begin{figure}[htbp]
+    \centering
+    \framebox{\parbox{0.8\textwidth}{\centering
+    \vspace{3cm}
+    \textbf{[INSERT DIAGRAM HERE]} \\
+    \vspace{0.5cm}
+    \textit{Instructions for user: Create a diagram showing [A chronological flowchart mapping the evolution of decomposition strategies from early Search-Based Software Engineering techniques (like Bunch) progressing through static/dynamic analysis, and culminating in modern Deep Learning and Code Embedding frameworks. Connect the epochs visually to emphasize the literature gap]. Save as 'lit_review_evolution.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{lit\_review\_evolution.png\}}.}
+    \vspace{3cm}
+    }}
+    \caption{Evolutionary trajectory of Monolithic to Microservices Decomposition Strategies.}
+    \label{fig:lit_review_evolution}
+\end{figure}
+
+\section{Proposed Methodology}
+
+The proposed methodology employs a multi-staged pipeline that ingests raw legacy code, generates high-fidelity multidimensional embeddings, and applies an unsupervised clustering algorithm to delineate microservice candidates.
+
+\subsection{System Architecture}
+The system architecture consists of three primary modules: the Source Code Analyzer, the Embedding Generator, and the Candidate Reasoner. 
+1. \textbf{Source Code Analyzer:} Parses the monolith using an AST generator (e.g., JavaParser) to map static dependencies (Method Invocation, Class Inheritance, Field Access). It concurrently strips comments and identifier names to build a semantic corpus.
+2. \textbf{Embedding Generator:} The core technical novelty. It utilizes a CodeBERT or GraphCodeBERT backbone to ingest paths from the AST combined with the semantic token stream, mapping each class to a $d$-dimensional embedding vector $\mathbf{v}_i \in \mathbb{R}^d$.
+3. \textbf{Candidate Reasoner:} Projects the vectors into a latent space and executes density-based or agglomerative clustering.
+
+\begin{figure}[htbp]
+    \centering
+    \framebox{\parbox{0.8\textwidth}{\centering
+    \vspace{3cm}
+    \textbf{[INSERT DIAGRAM HERE]} \\
+    \vspace{0.5cm}
+    \textit{Instructions for user: Create a diagram showing [A detailed software architecture diagram illustrating the end-to-end pipeline. It must depict the ingestion of raw monolithic code, the dual pathways of AST extraction and semantic parsing, their fusion in the CodeBERT embedding layer, and the final clustering output yielding discrete microservices. Use proper systems design notation]. Save as 'system_architecture.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{system\_architecture.png\}}.}
+    \vspace{3cm}
+    }}
+    \caption{High-Level Architecture of the Proposed Decomposition Framework.}
+    \label{fig:system_arch}
+\end{figure}
+
+\subsection{Mathematical and Algorithmic Formulations}
+Let the monolithic application be represented as a directed attributed graph $G = (V, E, X)$, where $V$ represents the set of classes, $E$ represents structural dependencies, and $X$ represents the semantic feature matrix.
+
+The embedding model defines a mapping function $f_\theta: V \to \mathbb{R}^d$ such that the similarity between vectors correlates with their conceptual cohesion. We utilize an InfoNCE contrastive loss function to train the embedding space, ensuring that classes invoking one another with shared semantic vocabulary are pulled closer:
+\begin{equation}
+\mathcal{L} = -\log \frac{\exp(sim(z_i, z_j)/\tau)}{\sum_{k=1}^{N} \exp(sim(z_i, z_k)/\tau)}
+\end{equation}
+Where $z_i, z_j$ are embeddings of coupled classes, $sim$ is cosine similarity, and $\tau$ is a temperature parameter.
+
+The clustering algorithm subsequently partitions $V$ into $K$ subsets $C = \{c_1, c_2, \dots, c_K\}$ by maximizing the Structural Modularity ($SM$) and Semantic Cohesion ($SC$):
+\begin{equation}
+\max_{C} \left( \alpha SM(C) + (1-\alpha) SC(C) \right)
+\end{equation}
+Where $\alpha$ is an adjustable weighting parameter bridging the gap between structural and semantic importance \cite{selmadji2020}.
+
+\subsection{Datasets}
+To ensure reproducibility and rigorous evaluation \cite{weerasinghe2026}, the framework will be tested against standard open-source monoliths widely utilized in literature:
+\begin{itemize}
+    \item \textbf{DayTrader:} A legacy benchmark stock trading application originally developed by IBM.
+    \item \textbf{JPetStore:} A standard monolithic web application demonstrating typical e-commerce operations.
+    \item \textbf{Plants:} A complex enterprise application with dense object relations.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+Evaluation will quantitatively measure both internal cohesion and external coupling. Primary metrics include:
+\begin{itemize}
+    \item \textbf{Modularity (MQ):} Evaluates the density of intra-service edges against inter-service edges \cite{mitchell2007}.
+    \item \textbf{MoJoFM (MoJo Distance Measure):} Calculates the distance between the proposed decomposition and human-expert ground truth boundaries \cite{quattrocchi2024}.
+    \item \textbf{Silhouette Score:} Analyzes the separation distance of the generated embeddings in the latent space.
+\end{itemize}
+
+\section{Project Plan}
+
+\subsection{Introduction}
+This section details the operational parameters, timeline, and resource allocation requisite for the successful execution of the FYP.
+
+\subsection{Scope}
+The scope encompasses the conceptualization, mathematical formulation, code implementation, and benchmarking of the decomposition tool. It explicitly excludes the automatic code refactoring or actual deployment of the resulting microservices, focusing strictly on identifying optimal boundaries.
+
+\subsection{Outcomes}
+The primary deliverables include:
+1. The mathematical definition of the hybrid code embedding algorithm.
+2. A complete Python-based prototype leveraging PyTorch and HuggingFace Transformers.
+3. A comprehensive evaluation report benchmarking the tool against Mono2Micro.
+
+\subsection{Software Requirements}
+\begin{itemize}
+    \item Python 3.10+
+    \item PyTorch, PyTorch Geometric
+    \item HuggingFace Transformers (CodeBERT/GraphCodeBERT)
+    \item JavaParser (for AST generation)
+    \item SciPy, Scikit-learn (for clustering logic)
+\end{itemize}
+
+\subsection{Hardware Requirements}
+\begin{itemize}
+    \item Workstation equipped with minimum 32GB RAM.
+    \item NVIDIA GPU (Minimum RTX 3080 or equivalent 10GB+ VRAM) for accelerating transformer embedding generation and contrastive learning computations.
+\end{itemize}
+
+\subsection{Timeline}
+
+\begin{figure}[htbp]
+    \centering
+    \framebox{\parbox{0.8\textwidth}{\centering
+    \vspace{3cm}
+    \textbf{[INSERT DIAGRAM HERE]} \\
+    \vspace{0.5cm}
+    \textit{Instructions for user: Create a diagram showing [A highly detailed Gantt chart spanning two academic semesters (approximately 8-9 months). Major milestones should include: Literature Review, Mathematical Formulation, AST Parser Implementation, Embedding Model Training, Clustering Logic Integration, Evaluation & Benchmarking, and Final Report Writing]. Save as 'project_gantt.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{project\_gantt.png\}}.}
+    \vspace{3cm}
+    }}
+    \caption{Project Timeline and Milestone Gantt Chart.}
+    \label{fig:gantt}
+\end{figure}
+
+\subsection{Task Distribution Plan}
+\begin{table}[htbp]
+\centering
+\caption{Project Task Distribution}
+\label{tab:task_distribution}
+\begin{tabularx}{\textwidth}{@{}l X l@{}}
+\toprule
+\textbf{Phase} & \textbf{Key Deliverables} & \textbf{Estimated Duration} \\
+\midrule
+Phase 1 & Comprehensive literature review and gap analysis. & 4 Weeks \\
+Phase 2 & Dataset acquisition and mathematical formulation. & 3 Weeks \\
+Phase 3 & Development of AST parser and feature extractors. & 4 Weeks \\
+Phase 4 & Deep learning model training (Embedding generation). & 6 Weeks \\
+Phase 5 & Integration of clustering algorithm. & 3 Weeks \\
+Phase 6 & Benchmarking against ground truth and MoJoFM. & 4 Weeks \\
+Phase 7 & Final documentation, thesis writing, and presentation prep. & 4 Weeks \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Summary}
+In conclusion, the proposed research directly addresses the significant industry hurdle of monolithic system migration by innovating upon structural dependency extraction with profound semantic embeddings. The projected methodology guarantees a quantifiable improvement in the logical cohesion of generated microservices, culminating in a robust prototype and exhaustive empirical evaluation over a structured developmental timeline.
+
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
