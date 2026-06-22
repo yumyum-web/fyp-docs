@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: mixed-line-ending
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        types_or: [markdown, yaml, json]
+
+  # NOTE: To format and lint LaTeX files automatically, you can uncomment
+  # the hooks below. They require `latexindent` and `chktex` to be installed
+  # on your system (usually available via TeX Live).
+  #
+  # - repo: local
+  #   hooks:
+  #     - id: latexindent
+  #       name: latexindent
+  #       entry: latexindent -w
+  #       language: system
+  #       types: [tex]
+  #     - id: chktex
+  #       name: chktex
+  #       entry: chktex -q
+  #       language: system
+  #       types: [tex]
