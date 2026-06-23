@@ -1,0 +1,33 @@
+name: Compile LaTeX Documents
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Tectonic
+        uses: wtfjoke/setup-tectonic@v4
+
+      - name: Cache Tectonic packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Tectonic
+          key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex', '**/*.bib') }}
+          restore-keys: |
+            ${{ runner.os }}-tectonic-
+
+      - name: Compile LaTeX documents
+        run: make
+
+      - name: Upload PDF Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-pdfs
+          path: "**/*.pdf"
