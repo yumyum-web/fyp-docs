@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -12,21 +12,13 @@ repos:
     rev: v3.1.0
     hooks:
       - id: prettier
-        types_or: [markdown, yaml, json]
+        types_or: [markdown, yaml, json, toml]
 
-  # NOTE: To format and lint LaTeX files automatically, you can uncomment
-  # the hooks below. They require `latexindent` and `chktex` to be installed
-  # on your system (usually available via TeX Live).
-  #
-  # - repo: local
-  #   hooks:
-  #     - id: latexindent
-  #       name: latexindent
-  #       entry: latexindent -w
-  #       language: system
-  #       types: [tex]
-  #     - id: chktex
-  #       name: chktex
-  #       entry: chktex -q
-  #       language: system
-  #       types: [tex]
+  - repo: local
+    hooks:
+      - id: tectonic-compile
+        name: Tectonic Compile Check
+        entry: make
+        language: system
+        files: \.(tex|bib)$
+        pass_filenames: false
