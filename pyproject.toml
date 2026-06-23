@@ -1,0 +1,8 @@
+[project]
+name = "fyp-docs"
+version = "0.1.0"
+description = "FYP Documentation Repository"
+requires-python = ">=3.10"
+dependencies = [
+    "pre-commit>=3.5.0",
+]
