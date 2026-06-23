@@ -10,6 +10,7 @@
 \usepackage{cite}
 \usepackage{titlesec}
 \usepackage{amsmath}
+\usepackage{amssymb}
 
 \titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
@@ -83,7 +84,7 @@ Acknowledging the limitations of pure structural analysis, researchers have pivo
 \centering
 \caption{Comparison of Semantic and NLP-Driven Microservice Decomposition Approaches}
 \label{tab:semantic_comp}
-\begin{tabularx}{\textwidth}{@{}l X X c@{}}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c@{}}
 \toprule
 \textbf{Framework} & \textbf{Strengths} & \textbf{Limitations} & \textbf{Ref} \\
 \midrule
@@ -102,7 +103,7 @@ Software is inherently graph-structured. Consequently, Graph Neural Networks (GN
 \centering
 \caption{Strengths and Limitations of Graph-Based Decomposition Methods}
 \label{tab:gnn_comp}
-\begin{tabularx}{\textwidth}{@{}l X X c@{}}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X c@{}}
 \toprule
 \textbf{Approach} & \textbf{Strengths} & \textbf{Limitations} & \textbf{Ref} \\
 \midrule
@@ -123,7 +124,7 @@ Despite the proliferation of graph and NLP methodologies, a distinct gap remains
     \vspace{3cm}
     \textbf{[INSERT DIAGRAM HERE]} \\
     \vspace{0.5cm}
-    \textit{Instructions for user: Create a diagram showing [A chronological flowchart mapping the evolution of decomposition strategies from early Search-Based Software Engineering techniques (like Bunch) progressing through static/dynamic analysis, and culminating in modern Deep Learning and Code Embedding frameworks. Connect the epochs visually to emphasize the literature gap]. Save as 'lit_review_evolution.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{lit\_review\_evolution.png\}}.}
+    \textit{Instructions for user: Create a diagram showing [A chronological flowchart mapping the evolution of decomposition strategies from early Search-Based Software Engineering techniques (like Bunch) progressing through static/dynamic analysis, and culminating in modern Deep Learning and Code Embedding frameworks. Connect the epochs visually to emphasize the literature gap]. Save as 'lit\_review\_evolution.png' and replace this framebox with \\ \texttt{\textbackslash includegraphics[width=0.8\textbackslash textwidth]\{lit\_review\_evolution.png\}}.}
     \vspace{3cm}
     }}
     \caption{Evolutionary trajectory of Monolithic to Microservices Decomposition Strategies.}
@@ -146,7 +147,7 @@ The system architecture consists of three primary modules: the Source Code Analy
     \vspace{3cm}
     \textbf{[INSERT DIAGRAM HERE]} \\
     \vspace{0.5cm}
-    \textit{Instructions for user: Create a diagram showing [A detailed software architecture diagram illustrating the end-to-end pipeline. It must depict the ingestion of raw monolithic code, the dual pathways of AST extraction and semantic parsing, their fusion in the CodeBERT embedding layer, and the final clustering output yielding discrete microservices. Use proper systems design notation]. Save as 'system_architecture.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{system\_architecture.png\}}.}
+    \textit{Instructions for user: Create a diagram showing [A detailed software architecture diagram illustrating the end-to-end pipeline. It must depict the ingestion of raw monolithic code, the dual pathways of AST extraction and semantic parsing, their fusion in the CodeBERT embedding layer, and the final clustering output yielding discrete microservices. Use proper systems design notation]. Save as 'system\_architecture.png' and replace this framebox with \\ \texttt{\textbackslash includegraphics[width=0.8\textbackslash textwidth]\{system\_architecture.png\}}.}
     \vspace{3cm}
     }}
     \caption{High-Level Architecture of the Proposed Decomposition Framework.}
@@ -154,7 +155,7 @@ The system architecture consists of three primary modules: the Source Code Analy
 \end{figure}
 
 \subsection{Mathematical and Algorithmic Formulations}
-Let the monolithic application be represented as a directed attributed graph $G = (V, E, X)$, where $V$ represents the set of classes, $E$ represents structural dependencies, and $X$ represents the semantic feature matrix.
+Let the monolithic application be represented as a directed attributed graph $G = (V, E, X)$, where $V$ is the set of classes, $E$ represents structural dependencies, and $X$ is the semantic feature matrix.
 
 The embedding model defines a mapping function $f_\theta: V \to \mathbb{R}^d$ such that the similarity between vectors correlates with their conceptual cohesion. We utilize an InfoNCE contrastive loss function to train the embedding space, ensuring that classes invoking one another with shared semantic vocabulary are pulled closer:
 \begin{equation}
@@ -162,7 +163,7 @@ The embedding model defines a mapping function $f_\theta: V \to \mathbb{R}^d$ su
 \end{equation}
 Where $z_i, z_j$ are embeddings of coupled classes, $sim$ is cosine similarity, and $\tau$ is a temperature parameter.
 
-The clustering algorithm subsequently partitions $V$ into $K$ subsets $C = \{c_1, c_2, \dots, c_K\}$ by maximizing the Structural Modularity ($SM$) and Semantic Cohesion ($SC$):
+The clustering algorithm then partitions $V$ into $K$ subsets $C = \{c_1, c_2, \dots, c_K\}$ by maximizing the Structural Modularity ($SM$) and Semantic Cohesion ($SC$):
 \begin{equation}
 \max_{C} \left( \alpha SM(C) + (1-\alpha) SC(C) \right)
 \end{equation}
@@ -172,7 +173,7 @@ Where $\alpha$ is an adjustable weighting parameter bridging the gap between str
 To ensure reproducibility and rigorous evaluation \cite{weerasinghe2026}, the framework will be tested against standard open-source monoliths widely utilized in literature:
 \begin{itemize}
     \item \textbf{DayTrader:} A legacy benchmark stock trading application originally developed by IBM.
-    \item \textbf{JPetStore:} A standard monolithic web application demonstrating typical e-commerce operations.
+    \item \textbf{JPetStore:} A standard monolithic web application demonstrating standard e-commerce workflows.
     \item \textbf{Plants:} A complex enterprise application with dense object relations.
 \end{itemize}
 
@@ -221,7 +222,7 @@ The primary deliverables include:
     \vspace{3cm}
     \textbf{[INSERT DIAGRAM HERE]} \\
     \vspace{0.5cm}
-    \textit{Instructions for user: Create a diagram showing [A highly detailed Gantt chart spanning two academic semesters (approximately 8-9 months). Major milestones should include: Literature Review, Mathematical Formulation, AST Parser Implementation, Embedding Model Training, Clustering Logic Integration, Evaluation & Benchmarking, and Final Report Writing]. Save as 'project_gantt.png' and replace this framebox with \texttt{\textbackslash includegraphics[width=0.8\textwidth]\{project\_gantt.png\}}.}
+    \textit{Instructions for user: Create a diagram showing [A highly detailed Gantt chart spanning two academic semesters (approximately 8-9 months). Major milestones should include: Literature Review, Mathematical Formulation, AST Parser Implementation, Embedding Model Training, Clustering Logic Integration, Evaluation \& Benchmarking, and Final Report Writing]. Save as 'project\_gantt.png' and replace this framebox with \\ \texttt{\textbackslash includegraphics[width=0.8\textbackslash textwidth]\{project\_gantt.png\}}.}
     \vspace{3cm}
     }}
     \caption{Project Timeline and Milestone Gantt Chart.}
@@ -233,7 +234,7 @@ The primary deliverables include:
 \centering
 \caption{Project Task Distribution}
 \label{tab:task_distribution}
-\begin{tabularx}{\textwidth}{@{}l X l@{}}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X l@{}}
 \toprule
 \textbf{Phase} & \textbf{Key Deliverables} & \textbf{Estimated Duration} \\
 \midrule
