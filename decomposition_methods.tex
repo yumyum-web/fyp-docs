@@ -48,6 +48,7 @@ The primary evaluation of the GC-HCE pipeline will focus on the cohesiveness and
 
 \begin{figure}[htbp]
     \centering
+    \resizebox{\linewidth}{!}{%
     \begin{tikzpicture}[
         box/.style={draw, rectangle, rounded corners, align=center, minimum width=2.5cm, minimum height=1cm, fill=blue!5},
         arrow/.style={->, >=Stealth, thick}
@@ -59,7 +60,8 @@ The primary evaluation of the GC-HCE pipeline will focus on the cohesiveness and
     \node[box, below right=1cm and -0.5cm of macro] (fusion) {Concatenation Fusion};
     \node[box, below=1cm of fusion] (hier) {Hierarchical Embedding};
     \node[box, below=1cm of hier] (loss) {Contrastive Multi-Metric Loss};
-    \node[box, right=1.5cm of loss] (services) {Final Microservices};
+    \node[box, right=1.5cm of loss] (kmeans) {K-Means\\Clustering};
+    \node[box, right=1.5cm of kmeans] (services) {Final Microservices};
 
     \draw[arrow] (ast) -- (louvain);
     \draw[arrow] (ast) -- (codebert);
@@ -68,9 +70,11 @@ The primary evaluation of the GC-HCE pipeline will focus on the cohesiveness and
     \draw[arrow] (codebert) |- (fusion);
     \draw[arrow] (fusion) -- (hier);
     \draw[arrow] (hier) -- (loss);
-    \draw[arrow] (loss) -- node[above] {Optimize} (services);
+    \draw[arrow] (loss) -- node[above] {Optimize} (kmeans);
+    \draw[arrow] (kmeans) -- (services);
     \draw[arrow, dashed] (loss.west) -- ++(-1,0) |- (fusion.west);
-    \end{tikzpicture}
+    \end{tikzpicture}%
+    }
     \caption{Workflow visualization for the GC-HCE Pipeline.}
     \label{fig:gchce}
 \end{figure}
@@ -101,6 +105,7 @@ Because this approach heavily relies on latent space representation, the evaluat
 
 \begin{figure}[htbp]
     \centering
+    \resizebox{\linewidth}{!}{%
     \begin{tikzpicture}[
         box/.style={draw, rectangle, rounded corners, align=center, minimum width=2.5cm, minimum height=1cm, fill=green!5},
         arrow/.style={->, >=Stealth, thick}
@@ -112,7 +117,8 @@ Because this approach heavily relies on latent space representation, the evaluat
     \node[box, below right=1cm and -1.5cm of stream1] (fusion) {Cross-Attention Fusion};
     \node[box, below=1cm of fusion] (latent) {Hierarchical Latent Space};
     \node[box, below=1cm of latent] (loss) {Auto-Encoder Loss};
-    \node[box, right=1.5cm of loss] (services) {Clustered Services};
+    \node[box, right=1.5cm of loss] (agglo_clust) {Agglomerative\\Clustering};
+    \node[box, right=1.5cm of agglo_clust] (services) {Clustered Services};
 
     \draw[arrow] (dep) -- (spec);
     \draw[arrow] (spec) -- (stream1);
@@ -121,9 +127,11 @@ Because this approach heavily relies on latent space representation, the evaluat
     \draw[arrow] (stream2) |- (fusion);
     \draw[arrow] (fusion) -- (latent);
     \draw[arrow] (latent) -- (loss);
-    \draw[arrow] (loss) -- (services);
+    \draw[arrow] (loss) -- (agglo_clust);
+    \draw[arrow] (agglo_clust) -- (services);
     \draw[arrow, dashed] (loss.west) -- ++(-1,0) |- (fusion.west);
-    \end{tikzpicture}
+    \end{tikzpicture}%
+    }
     \caption{Workflow visualization for the Auto-Encoder Driven GNN.}
     \label{fig:autoencoder}
 \end{figure}
@@ -154,6 +162,7 @@ Since the RL agent directly uses the metrics as its reward function, evaluation 
 
 \begin{figure}[htbp]
     \centering
+    \resizebox{\linewidth}{!}{%
     \begin{tikzpicture}[
         box/.style={draw, rectangle, rounded corners, align=center, minimum width=2.5cm, minimum height=1cm, fill=orange!5},
         arrow/.style={->, >=Stealth, thick}
@@ -164,7 +173,8 @@ Since the RL agent directly uses the metrics as its reward function, evaluation 
     \node[box, below right=1cm and -1.5cm of graph] (stack) {Hierarchical Stack};
     \node[box, below=1cm of stack] (rl) {RL Agent Boundary Generator};
     \node[box, below=1cm of rl] (reward) {Reward Function\\Evaluation};
-    \node[box, right=1.5cm of reward] (web) {Interactive Web Dashboard};
+    \node[box, right=1.5cm of reward] (final_clust) {RL Boundary\\Clustering};
+    \node[box, right=1.5cm of final_clust] (web) {Interactive Web Dashboard};
 
     \draw[arrow] (agglo) -- (graph);
     \draw[arrow] (graph) |- (stack);
@@ -172,8 +182,10 @@ Since the RL agent directly uses the metrics as its reward function, evaluation 
     \draw[arrow] (stack) -- (rl);
     \draw[arrow] (rl) -- (reward);
     \draw[arrow, dashed] (reward.west) -- ++(-1.5,0) |- node[near start, left] {Feedback (SM, IFN, ICP)} (rl.west);
-    \draw[arrow] (reward) -- node[above] {Optimal} (web);
-    \end{tikzpicture}
+    \draw[arrow] (reward) -- node[above] {Optimal} (final_clust);
+    \draw[arrow] (final_clust) -- (web);
+    \end{tikzpicture}%
+    }
     \caption{Workflow visualization for the RL-MD approach.}
     \label{fig:rlmd}
 \end{figure}
@@ -204,6 +216,7 @@ The evaluation for AMMCF revolves around its ability to dynamically discover the
 
 \begin{figure}[htbp]
     \centering
+    \resizebox{\linewidth}{!}{%
     \begin{tikzpicture}[
         box/.style={draw, rectangle, rounded corners, align=center, minimum width=2.5cm, minimum height=1cm, fill=red!5},
         arrow/.style={->, >=Stealth, thick}
@@ -215,7 +228,8 @@ The evaluation for AMMCF revolves around its ability to dynamically discover the
     \node[box, below right=1cm and -1.5cm of macro] (fusion) {Dynamic Weight Fusion};
     \node[box, below=1cm of fusion] (unified) {Unified Hierarchical Embedding};
     \node[box, below=1cm of unified] (loss) {Dynamic Loss Scaling (NED)};
-    \node[box, right=1.5cm of loss] (ide) {IDE Extension Output};
+    \node[box, right=1.2cm of loss] (hier) {Hierarchical\\Clustering (Dynamic $k$)};
+    \node[box, right=1.2cm of hier] (ide) {IDE Extension Output};
 
     \draw[arrow] (prune) -- (girvan);
     \draw[arrow] (girvan) -- (macro);
@@ -223,9 +237,11 @@ The evaluation for AMMCF revolves around its ability to dynamically discover the
     \draw[arrow] (micro) |- (fusion);
     \draw[arrow] (fusion) -- (unified);
     \draw[arrow] (unified) -- (loss);
-    \draw[arrow] (loss) -- node[above] {Clusters} (ide);
+    \draw[arrow] (loss) -- (hier);
+    \draw[arrow] (hier) -- node[above] {Clusters} (ide);
     \draw[arrow, dashed] (loss.west) -- ++(-1.5,0) |- (fusion.west);
-    \end{tikzpicture}
+    \end{tikzpicture}%
+    }
     \caption{Workflow visualization for AMMCF.}
     \label{fig:ammcf}
 \end{figure}
