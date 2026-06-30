@@ -22,6 +22,7 @@
 This document outlines four highly concrete, distinct methodologies for automated microservice decomposition. Furthermore, \textbf{every single method} has been engineered to strictly fulfill all four primary project objectives (O1: Chunking, O2: Hierarchical Embeddings, O3: Optimization, O4: Tool Development) while maintaining its own unique architectural paradigm.
 \end{abstract}
 
+\clearpage
 \section{Graph-Contrastive Hierarchical Community Embedding (GC-HCE) Pipeline}
 
 \subsection{Genesis}
@@ -36,6 +37,13 @@ This document outlines four highly concrete, distinct methodologies for automate
     \item \textbf{O2 (Hierarchical Embeddings):} Concatenates macro-embeddings (GraphSAGE representations of communities) with micro-embeddings (CodeBERT vectors of specific functions).
     \item \textbf{O3 (Enhanced Optimization):} Uses a contrastive loss function explicitly weighting Triplet Loss, Structural Modularity (SM), and Inter-partition Communication (ICP) to heavily penalize cross-boundary method calls.
     \item \textbf{O4 (Tool Development):} Packaged as a GitHub Action that parses a repository on commit and generates architectural boundary recommendations in a pull request.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+The primary evaluation of the GC-HCE pipeline will focus on the cohesiveness and independence of the generated microservices.
+\begin{itemize}
+    \item \textbf{Structural Modularity (SM):} Assesses whether the community detection appropriately groups highly cohesive classes together.
+    \item \textbf{Inter-partition Communication (ICP):} Used to penalize and evaluate excessive runtime method calls between the generated macro-micro clusters.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -67,6 +75,7 @@ This document outlines four highly concrete, distinct methodologies for automate
     \label{fig:gchce}
 \end{figure}
 
+\clearpage
 \section{Auto-Encoder Driven Multi-Granularity GNN}
 
 \subsection{Genesis}
@@ -81,6 +90,13 @@ This document outlines four highly concrete, distinct methodologies for automate
     \item \textbf{O2 (Hierarchical Embeddings):} A two-stream GNN architecture where stream one processes chunk-level macro-nodes and stream two processes class-level micro-nodes, fusing them via a cross-attention mechanism.
     \item \textbf{O3 (Enhanced Optimization):} Focuses heavily on Reconstruction loss combined with Clustering loss and Interface Number (IFN) penalties to ensure decoupled microservices.
     \item \textbf{O4 (Tool Development):} Delivered as a standalone Command Line Interface (CLI) tool capable of ingesting monolithic repositories and exporting decoupled, Docker-ready service definitions.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+Because this approach heavily relies on latent space representation, the evaluation will measure both architectural quality and structural fidelity.
+\begin{itemize}
+    \item \textbf{Interface Number (IFN):} Evaluates whether the cross-attention fusion successfully minimizes exposed endpoints between bounded contexts.
+    \item \textbf{Reconstruction Error \& Silhouette Score:} Measures how well the microservices form distinct clusters in the latent vector space.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -112,6 +128,7 @@ This document outlines four highly concrete, distinct methodologies for automate
     \label{fig:autoencoder}
 \end{figure}
 
+\clearpage
 \section{LLM-Bootstrapped Reinforcement Learning Decomposition (RL-MD)}
 
 \subsection{Genesis}
@@ -126,6 +143,13 @@ This document outlines four highly concrete, distinct methodologies for automate
     \item \textbf{O2 (Hierarchical Embeddings):} Stacks semantic embeddings (generated via an LLM for fine-grained functions) on top of structural embeddings (generated via graph algorithms for coarse communities).
     \item \textbf{O3 (Enhanced Optimization):} Replaces standard backpropagation with a Reinforcement Learning agent. The agent adjusts cluster boundaries to maximize a reward function defined exactly by the multi-metric equation: $Reward = SM - IFN - ICP$.
     \item \textbf{O4 (Tool Development):} Built as an interactive web dashboard that connects to GitHub, visualizes the RL agent's boundary shifting process in real-time, and allows architects to manually approve or reject boundaries.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+Since the RL agent directly uses the metrics as its reward function, evaluation focuses on the convergence of these metrics and the human-in-the-loop qualitative feedback.
+\begin{itemize}
+    \item \textbf{Reward Convergence ($SM - IFN - ICP$):} Measures the agent's ability to maximize structural modularity while simultaneously minimizing interface exposure and inter-partition communication.
+    \item \textbf{Architectural Review Approval Rate:} A qualitative metric capturing the percentage of boundary shifts accepted by senior software architects via the interactive dashboard.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -154,6 +178,7 @@ This document outlines four highly concrete, distinct methodologies for automate
     \label{fig:rlmd}
 \end{figure}
 
+\clearpage
 \section{Adaptive Multi-Metric Contrastive Fusion (AMMCF)}
 
 \subsection{Genesis}
@@ -168,6 +193,13 @@ This document outlines four highly concrete, distinct methodologies for automate
     \item \textbf{O2 (Hierarchical Embeddings):} Utilizes a dynamic weighting scheme to fuse macro-community embeddings and micro-class embeddings. If a community is highly complex, the model dynamically relies more on the micro-embeddings.
     \item \textbf{O3 (Enhanced Optimization):} Trains via a unified loss function that dynamically scales Triplet loss (for separation) and SM/IFN/ICP (for architectural validity) based on the current epoch's NED score, automatically hunting for the optimum $k$ value.
     \item \textbf{O4 (Tool Development):} Distributed as a VS Code / IDE Extension that provides real-time, on-the-fly decomposition feedback and visualizations for developers working within legacy monoliths.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+The evaluation for AMMCF revolves around its ability to dynamically discover the optimal microservice count (hyperparameter $k$).
+\begin{itemize}
+    \item \textbf{Non-Extreme Distribution (NED):} The primary metric to evaluate whether the dynamic loss scaling successfully avoids ``god classes'' (mega-services) and ``nano-services''.
+    \item \textbf{Overall Decomposition Quality (ODQ):} A holistic evaluation of the resulting architecture against established baseline monolith benchmarks (e.g., JPetStore, AcmeAir).
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -198,6 +230,7 @@ This document outlines four highly concrete, distinct methodologies for automate
     \label{fig:ammcf}
 \end{figure}
 
+\clearpage
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
